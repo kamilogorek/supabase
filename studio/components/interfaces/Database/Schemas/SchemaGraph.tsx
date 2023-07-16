@@ -16,7 +16,7 @@ import ReactFlow, {
 
 import { PostgresTable } from '@supabase/postgres-meta'
 import { useStore } from 'hooks'
-import { IconLoader } from 'ui'
+import { IconKey, IconLoader } from 'ui'
 
 import 'reactflow/dist/style.css'
 
@@ -198,7 +198,7 @@ function TableNode({ data, targetPosition, sourcePosition }: NodeProps<TableNode
   // Important styles is a nasty hack to use Handles (required for edges calculations), but do not show them in the UI.
   // ref: https://github.com/wbkd/react-flow/discussions/2698
   const hiddenNodeConnector = '!h-px !w-px !min-w-0 !min-h-0 !cursor-grab !border-0 !opacity-0'
-
+  console.log(data)
   return (
     <>
       {data.isForeign ? (
@@ -223,17 +223,17 @@ function TableNode({ data, targetPosition, sourcePosition }: NodeProps<TableNode
 
           {data.columns.map((column) => (
             <div
-              className="text-[8px] leading-5 relative flex justify-between odd:bg-scale-300 even:bg-scale-400"
+              className="text-[8px] leading-5 relative grid grid-cols-5 odd:bg-scale-300 even:bg-scale-400"
               key={column.id}
             >
-              <span
-                className={`${
-                  column.isPrimary ? 'border-l-2 border-l-brand-900 pl-[6px] pr-2' : 'px-2'
-                } text-ellipsis overflow-hidden whitespace-nowrap`}
-              >
+              <span className="col-span-1 inline-flex justify-center align-middle items-center">
+                {column.isPrimary ? <IconKey size={8} strokeWidth={2} /> : ''}
+              </span>
+              <span className="text-ellipsis overflow-hidden whitespace-nowrap col-span-2">
                 {column.name}
               </span>
-              <span className="px-2">{column.format}</span>
+
+              <span className="px-2 col-span-2 inline-flex justify-end">{column.format}</span>
               {targetPosition && (
                 <Handle
                   type="target"
